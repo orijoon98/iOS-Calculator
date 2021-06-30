@@ -9,7 +9,60 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    var printNum: String = "0"
+    
+    func changeAC() {
+        if printNum == "0" {
+            ACButton.setTitle("AC", for: .normal)
+        } else {
+            ACButton.setTitle("C", for: .normal)
+        }
+    }
+    
+    func isDecimal(_ num: String) -> Bool {
+        for char in num {
+            if char == "." {
+                return true
+            }
+        }
+        return false
+    }
+    
+    func numChange(_ num: Int){
+        var flag: Bool = true
+        var cnt: Int = 0
+        for char in printNum {
+            if char == "." {
+                flag = false
+            }
+            if !flag {
+                cnt += 1
+            }
+        }
+        if flag { // 소수가 아니라면
+            if Int(printNum)! >= 0 {
+                printNum = String(Int(printNum)! * 10 + num)
+            } else {
+                printNum = String(Int(printNum)! * 10 - num)
+            }
+            OutputLabel.text = printNum
+        }
+        else { // 소수라면
+            var change: Double = 1
+            for _ in 1...cnt {
+                change /= 10
+            }
+            if Double(printNum)! >= 0 {
+                printNum = String(Double(printNum)! + Double(num) * change)
+            } else {
+                printNum = String(Double(printNum)! - Double(num) * change)
+            }
+            OutputLabel.text = printNum
+        }
+    }
+    
     @IBOutlet weak var OutputLabel: UILabel!
+    
     @IBOutlet weak var ACButton: UIButton!
     @IBOutlet weak var PlusMinusButton: UIButton!
     @IBOutlet weak var PercentButton: UIButton!
@@ -31,19 +84,100 @@ class ViewController: UIViewController {
     @IBOutlet weak var EqualButton: UIButton!
     
     @IBAction func touchACButton(_ sender: Any) {
-        print("AC")
+        printNum = "0"
+        changeAC()
+        OutputLabel.text = printNum
     }
     
     @IBAction func touchPlusMinusButton(_ sender: Any) {
-        print("PlusMinus")
+        if isDecimal(printNum) {
+            printNum = String(-1 * Double(printNum)!)
+        } else {
+            printNum = String(-1 * Int(printNum)!)
+        }
+        OutputLabel.text = printNum
     }
     
     @IBAction func touchPercentButton(_ sender: Any) {
-        print("Percent")
+        printNum = String(Double(printNum)! / 100)
+        OutputLabel.text = printNum
     }
     
     @IBAction func touchDivideButton(_ sender: Any) {
         print("Divide")
+    }
+    
+    @IBAction func touchSevenButton(_ sender: Any) {
+        numChange(7)
+        changeAC()
+    }
+    
+    @IBAction func touchEightButton(_ sender: Any) {
+        numChange(8)
+        changeAC()
+    }
+    
+    @IBAction func touchNineButton(_ sender: Any) {
+        numChange(9)
+        changeAC()
+    }
+    
+    @IBAction func touchMultipleButton(_ sender: Any) {
+        print("Multiple")
+    }
+    
+    @IBAction func touchFourButton(_ sender: Any) {
+        numChange(4)
+        changeAC()
+    }
+    
+    @IBAction func touchFiveButton(_ sender: Any) {
+        numChange(5)
+        changeAC()
+    }
+    
+    @IBAction func touchSixButton(_ sender: Any) {
+        numChange(6)
+        changeAC()
+    }
+    
+    @IBAction func touchMinusButton(_ sender: Any) {
+        print("Minus")
+    }
+    
+    @IBAction func touchOneButton(_ sender: Any) {
+        numChange(1)
+        changeAC()
+    }
+    
+    @IBAction func touchTwoButton(_ sender: Any) {
+        numChange(2)
+        changeAC()
+    }
+    
+    @IBAction func touchThreeButton(_ sender: Any) {
+        numChange(3)
+        changeAC()
+    }
+    
+    @IBAction func touchPlusButton(_ sender: Any) {
+        print("Plus")
+    }
+    
+    @IBAction func touchZeroButton(_ sender: Any) {
+        numChange(0)
+        changeAC()
+    }
+    
+    @IBAction func touchDotButton(_ sender: Any) {
+        if !isDecimal(printNum) {
+            printNum += "."
+        }
+        OutputLabel.text = printNum
+    }
+    
+    @IBAction func touchEqualButton(_ sender: Any) {
+        print("Equal")
     }
     
     override func viewDidLoad() {
@@ -71,8 +205,7 @@ class ViewController: UIViewController {
         DotButton.layer.cornerRadius = 34.5
         EqualButton.layer.cornerRadius = 34.5
 
+        OutputLabel.text = printNum
     }
-
-
 }
 
